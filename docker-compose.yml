@@ -1,0 +1,26 @@
+services:
+  database:
+    image: postgres:16
+    container_name: acme_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: acme_user
+      POSTGRES_PASSWORD: acme_password
+      POSTGRES_DB: acme_database
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+volumes:
+  postgres_data:
+
+# docker compose up -d -> inicia o serviço em segundo plano
+# docker compose down -> para e remove os containers, redes e volumes criados
+# docker compose logs -f -> exibe os logs em tempo real
+# docker compose ps -> lista os containers em execução
